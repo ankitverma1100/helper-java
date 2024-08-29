@@ -1,0 +1,4 @@
+helper/helperapi/services/SportsServiceTest.class
+helper/helperapi/HelperApiApplicationTests.class
+helper/helperapi/services/EventServiceTest.class
+helper/helperapi/controller/SportsControllerTest.class
