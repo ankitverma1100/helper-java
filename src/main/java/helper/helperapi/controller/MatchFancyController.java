@@ -13,9 +13,7 @@ import helper.helperapi.mysqlRepo.MatchFancyRepo;
 import helper.helperapi.repository.BetListRepository;
 import helper.helperapi.repository.EventRepository;
 import helper.helperapi.repository.FancyResultRepository;
-import helper.helperapi.repository.MatchFancyRepository;
 import helper.helperapi.services.MatchFancyService;
-import helper.helperapi.sqlModels.BetListModel;
 import helper.helperapi.sqlModels.FancyResultsModel;
 import helper.helperapi.sqlModels.MatchFancyModel;
 import helper.helperapi.mysqlRepo.BetListsRepository;
@@ -256,12 +254,35 @@ public class MatchFancyController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message", "Market id not match ","status",false));
     }
 
+//    @PostMapping("/maxminfancyupdate")
+//    public ResponseEntity<Map<String, Object>> findMaxData(@RequestBody AddFancyDTO dto) throws ResourceNotFoundException {
+//        List<MatchFancy> markets = matchFancyRepository.findByEventid(dto.getEventid());
+////        if (markets.isEmpty()) {
+////            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message", "Event not found ","status",false));
+////        }
+//
+//        Map<String, List<Map<String, Object>>> groupedMarkets = markets.stream()
+//                .map(market -> {
+//                    Map<String, Object> selectedMap = new HashMap<>();
+//                    selectedMap.put("betdelay", market.getBetDelay());
+//                    selectedMap.put("maxbet", market.getMaxBet());
+//                    selectedMap.put("minbet", market.getMinBet());
+//                    selectedMap.put("oddstype", market.getOddstype() != null ? market.getOddstype() : "UNKNOWN"); // Handle null "oddstype"
+//                    selectedMap.put("eventid", market.getEventid());
+//                    selectedMap.put("matchname", market.getMatchname());
+//                    return selectedMap;
+//                })
+//                .collect(Collectors.groupingBy(m -> (String) m.get("oddstype")));
+//
+//        return ResponseEntity.status(HttpStatus.OK).body(Map.of(
+//                "message", "Get data successfully", "status",true,"data", groupedMarkets));
+//    }
     @PostMapping("/maxminfancyupdate")
     public ResponseEntity<Map<String, Object>> findMaxData(@RequestBody AddFancyDTO dto) throws ResourceNotFoundException {
         List<MatchFancy> markets = matchFancyRepository.findByEventid(dto.getEventid());
-        if (markets.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message", "Event not found ","status",false));
-        }
+//        if (markets.isEmpty()) {
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message", "Event not found ","status",false));
+//        }
 
         Map<String, List<Map<String, Object>>> groupedMarkets = markets.stream()
                 .map(market -> {
@@ -276,8 +297,14 @@ public class MatchFancyController {
                 })
                 .collect(Collectors.groupingBy(m -> (String) m.get("oddstype")));
 
-        return ResponseEntity.status(HttpStatus.OK).body(Map.of(
-                "message", "Get data successfully", "status",true,"data", groupedMarkets));
+        Map<String, Object> data = new HashMap<>();
+        data.put("F2", groupedMarkets); // groupedMarkets should be defined
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", "fetch fancy rate");
+        response.put("data", data);
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @PostMapping("/updateallfancy")

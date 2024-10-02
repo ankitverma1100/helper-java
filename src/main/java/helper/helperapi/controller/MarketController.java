@@ -286,11 +286,16 @@ public class MarketController {
     @GetMapping("/allreadysuspended")
     public  HashMap<String, Object> allreadysuspended () throws  ResourceNotFoundException{
         List<Market> findMarketdata = marketRepository.findByIsSuspended(true);
+
         if(findMarketdata.isEmpty()){
-            throw  new ResourceNotFoundException("no any  isSuspended data");
+            HashMap<String ,Object> res = new HashMap<>();
+            res.put("data",findMarketdata);
+            res.put("message","get suspended market");
+            return  res ;
         }
         HashMap<String ,Object> res = new HashMap<>();
         res.put("data",findMarketdata.stream().map(data -> new AllReadSuspendedRes(data.getMarketid())).toList());
+        res.put( "message","get suspended market");
         return  res ;
     }
 

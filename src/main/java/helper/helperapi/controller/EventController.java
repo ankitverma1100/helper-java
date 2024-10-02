@@ -1,10 +1,7 @@
 package helper.helperapi.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import helper.helperapi.dto.AddSportDTO;
-import helper.helperapi.dto.EventDeDTO;
-import helper.helperapi.dto.GetMarketDTO;
-import helper.helperapi.dto.OtherEvent;
+import helper.helperapi.dto.*;
 import helper.helperapi.entity.Event;
 import helper.helperapi.entity.Sports;
 import helper.helperapi.exception.ResourceNotFoundException;
@@ -91,10 +88,9 @@ public class EventController {
     }
 
 
-    @PostMapping("/t_addTabSports")
-    public ResponseEntity<?> t_addTabSport(@RequestBody AddSportDTO addSportDTO){
+    @PostMapping("/t_addtabsports")
+    public ResponseEntity<?> t_addTabSport(@RequestBody AddSportDTONew addSportDTO){
         List<Sports> fetchT_sports = sportRepository.findByTypeAndStatus("betfair", true);
-        System.out.println("event id is"+ addSportDTO.getEventid());
         if (fetchT_sports.isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of(
                     "message", "Type not betfair. Please contact admin","status",false
@@ -107,8 +103,8 @@ public class EventController {
                 ));
             }
 
-        System.out.println("event id is"+ addSportDTO.getEventid());
-        Optional<Event> event1 = eventRepository.findByEventid(addSportDTO.getEventid());
+        System.out.println("event id is"+ addSportDTO.getEventId());
+        Optional<Event> event1 = eventRepository.findByEventid(addSportDTO.getEventId());
         if (event1.isPresent()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(Map.of("message", "Event already added for this eventID","status",false));

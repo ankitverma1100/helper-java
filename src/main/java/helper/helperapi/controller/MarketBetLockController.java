@@ -6,6 +6,7 @@ import helper.helperapi.modelResponse.MarketBetLockRes;
 import helper.helperapi.mysqlRepo.MarketBetLockRepo;
 import helper.helperapi.repository.MarketBetLockRepository;
 import helper.helperapi.services.FancyBetLockService;
+import helper.helperapi.sqlModels.BetLockResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -61,6 +62,17 @@ public class MarketBetLockController {
         return ResponseEntity.status(HttpStatus.OK).body(Map.of(
                 "message", "Sport  remove successfully"
         ));
+    }
+
+
+    @GetMapping("/getMarketBetlock/{eventid}")
+    public ResponseEntity<Object> getAllReadyMarketBetLockAdded(@PathVariable int eventid) {
+        List<MarketBetLock> getMarket = marketBetLockRepository.findByMatchId(eventid);
+        if(getMarket.isEmpty()){
+            return ResponseEntity.ok().body(Map.of("message", "getted market","status",true, "data",null));
+
+        }
+        return ResponseEntity.ok().body(Map.of("message", "getted market","status",true, "data", getMarket.stream().map(data -> new BetLockResponse(data.getMarketName(),data.getMatchId()))));
     }
 
 }

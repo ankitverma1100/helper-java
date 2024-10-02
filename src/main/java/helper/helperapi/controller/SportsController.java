@@ -11,6 +11,7 @@ import helper.helperapi.models.Sport;
 import helper.helperapi.mysqlRepo.SportsRepo;
 import helper.helperapi.repository.SportRepository;
 import helper.helperapi.services.SportsService;
+import helper.helperapi.sqlModels.ObjectCommonResponseModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -32,7 +33,7 @@ public class SportsController {
     @Value("${url_Other}")
     private String apiUrl;
     @CrossOrigin("*")
-    @PostMapping("/addSport")
+    @PostMapping("/AddSports")
     public ResponseEntity<?> addSport (@RequestBody SportDTO sport) throws ResourceNotFoundException {
       Optional<Sports> sport1 = sportRepository.findBySportid(sport.getSportid());
       if(sport1.isPresent()){
@@ -46,9 +47,14 @@ public class SportsController {
           ));
 
   }
-    @DeleteMapping("/RemoveSports")
-    public ResponseEntity<?> findAndDeleteBySport (@RequestParam int sportid) throws ResourceNotFoundException {
-        sportsService.findAndDeleteBySportId(sportid);
+    @PostMapping("/RemoveSports")
+    public ResponseEntity<?> findAndDeleteBySport (@RequestBody Map<String,Object> sportid) throws ResourceNotFoundException {
+        if(sportid.get("sportid")==null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of(
+                    "message", "Please Provide Sportid"
+            ));
+        }
+        sportsService.findAndDeleteBySportId(Integer.parseInt(sportid.get("sportid").toString()));
         return ResponseEntity.status(HttpStatus.OK).body(Map.of(
                 "message", "Sport  remove successfully"
         ));
@@ -81,16 +87,19 @@ public class SportsController {
 
 
     @GetMapping("/allreadySportsAdded")
-    public List<AllReadRes> getAllSports()throws  ResourceNotFoundException {
+    public ResponseEntity<Object> getAllSports()throws  ResourceNotFoundException {
 
             List<Sports> sports = sportRepository.findAll();
             if(sports.isEmpty()){
                 throw new ResourceNotFoundException("Please add sports to continue");
             }
         List<Map<String,Object>> maps = new ArrayList<>();
+        ObjectCommonResponseModel objectCommonResponseModel = new ObjectCommonResponseModel();
+        objectCommonResponseModel.setData(sports.stream().map(data->new AllReadRes(data.getSportid())).toList());
+        objectCommonResponseModel.setMessage("Sport List found");
+        return ResponseEntity.ok(objectCommonResponseModel);
 
 
-            return sports.stream().map(data->new AllReadRes(data.getSportid(),data.getCreatedOn())).toList();
     }
 
 }

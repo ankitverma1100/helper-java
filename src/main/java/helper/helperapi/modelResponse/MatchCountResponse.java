@@ -5,8 +5,8 @@ import lombok.Data;
 public class MatchCountResponse {
     private Boolean betlock ;
     private Boolean fancylock  ;
-    private int eventid;
-    public  MatchCountResponse(Boolean betlock , Boolean fancylock , int eventid){
+    private long eventid;
+    public  MatchCountResponse(Boolean betlock , Boolean fancylock , long eventid){
         this.betlock = betlock ;
         this.fancylock = fancylock ;
         this.eventid = eventid ;

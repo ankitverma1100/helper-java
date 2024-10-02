@@ -8,7 +8,7 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 public class GetEventResponse {
-    private  int eventId ;
+    private  long eventId ;
     private  String name ;
     private  String league ;
     private int sportId;
@@ -20,7 +20,7 @@ public class GetEventResponse {
     private String created_on;
 
 
-    public  GetEventResponse (int eventId ,String created_on ,String type,  String name , String league,int sportId, int compId,boolean status ,boolean isTv,
+    public  GetEventResponse (long eventId ,String created_on ,String type,  String name , String league,int sportId, int compId,boolean status ,boolean isTv,
      boolean fancy){
          this.eventId = eventId ;
          this.name = name ;

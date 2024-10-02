@@ -2,6 +2,7 @@ package helper.helperapi.services;
 
 
 import helper.helperapi.dto.AddSportDTO;
+import helper.helperapi.dto.AddSportDTONew;
 import helper.helperapi.entity.Event;
 import helper.helperapi.entity.Sports;
 import helper.helperapi.exception.ResourceNotFoundException;
@@ -43,7 +44,7 @@ public class EventService {
     SimpleDateFormat dateFormatForDB = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 //
-    public ResponseEntity<?> t_addTabSports(AddSportDTO addSportDTO) {
+    public ResponseEntity<?> t_addTabSports(AddSportDTONew addSportDTO) {
         List<Sports> fetchT_sports = sportRepository.findByTypeAndStatus("betfair", true);
         if (fetchT_sports.isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -54,7 +55,7 @@ public class EventService {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(Map.of("message", "Please provide a valid sportId.","status",false));
         }
-        Optional<Event> event1 = eventRepository.findByEventid(addSportDTO.getEventid());
+        Optional<Event> event1 = eventRepository.findByEventid(addSportDTO.getEventId());
         if (event1.isPresent()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(Map.of("message", "Event already added for this eventID","status",false));
@@ -62,13 +63,14 @@ public class EventService {
         }
         RestTemplate restTemplate = new RestTemplate();
         GameData data = restTemplate.getForObject(other_Url, GameData.class);
+
         GameData data1 = restTemplate.getForObject(url, GameData.class);
         if (addSportDTO.getSportid() == 4) {
             for (EventClass addEventClass : data.getGameList()) {
                 for (EventDataClass addEventDataClass : addEventClass.getEventList()) {
                     Event event = new Event();
                     Series series = new Series();
-                    if (addEventDataClass.getEventData().getEventId() == addSportDTO.getEventid() && addEventDataClass.getEventData().getSportId() == addSportDTO.getSportid()) {
+                    if (addEventDataClass.getEventData().getEventId() == addSportDTO.getEventId() && addEventDataClass.getEventData().getSportId() == addSportDTO.getSportid()) {
                         event.setEventid(addEventDataClass.getEventData().getEventId());
                         event.setSportid(addEventDataClass.getEventData().getSportId());
                         event.setLiveTv(addEventDataClass.getEventData().getIsTv());
@@ -97,7 +99,6 @@ public class EventService {
                     }
                 }
             }
-
         }
         List<EventDataClass> result = new ArrayList<>();
         for (GameData gameData : List.of(data, data1)) {
@@ -106,7 +107,7 @@ public class EventService {
                     if (addSportDTO.getSportid() == gameData.getGameList().get(i).getSportId()) {
                         List<EventDataClass> events = gameData.getGameList().get(i).getEventList();
                         for (EventDataClass eventData : events) {
-                            if (eventData.getEventData().getEventId() == addSportDTO.getEventid()) {
+                            if (eventData.getEventData().getEventId() == addSportDTO.getEventId()) {
                                 Event event = new Event();
                                 Series series = new Series();
                                 event.setEventid(eventData.getEventData().getEventId());

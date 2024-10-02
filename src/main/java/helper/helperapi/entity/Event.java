@@ -25,7 +25,7 @@ public class Event {
 	private Integer sportid;
 
 	@Column(name = "eventid", unique = true)
-	private Integer eventid;
+	private long eventid;
 
 	@Column(name = "eventname")
 	private String eventname;

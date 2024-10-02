@@ -7,10 +7,10 @@ import java.util.Date;
 @Data
 public class AllReadRes {
     private  int sportid;
-    private String createdon;
+//    private String createdon;
 
-    public AllReadRes(int sportid, String createdon) {
+    public AllReadRes(int sportid) {
         this.sportid= sportid;
-        this.createdon = createdon;
+//        this.createdon = createdon;
     }
 }

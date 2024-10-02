@@ -171,6 +171,7 @@
 /Users/ankit/Downloads/prod/Helper/helper_java/src/main/java/helper/helperapi/services/ModuleService.java
 /Users/ankit/Downloads/prod/Helper/helper_java/src/main/java/helper/helperapi/modelResponse/UpdateSuspendedRes.java
 /Users/ankit/Downloads/prod/Helper/helper_java/src/main/java/helper/helperapi/dto/LoginDTO.java
+/Users/ankit/Downloads/prod/Helper/helper_java/src/main/java/helper/helperapi/sqlModels/BetLockResponse.java
 /Users/ankit/Downloads/prod/Helper/helper_java/src/main/java/helper/helperapi/config/SecurityConfig.java
 /Users/ankit/Downloads/prod/Helper/helper_java/src/main/java/helper/helperapi/repository/T_fancy_rollback_detailRepository.java
 /Users/ankit/Downloads/prod/Helper/helper_java/src/main/java/helper/helperapi/repository/MarketRepository.java

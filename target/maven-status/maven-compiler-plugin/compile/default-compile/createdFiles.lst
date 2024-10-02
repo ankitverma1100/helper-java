@@ -55,6 +55,7 @@ helper/helperapi/repository/MinMaxBetAmountRepository.class
 helper/helperapi/modelResponse/Fancy_mTypeRes.class
 helper/helperapi/repository/MarketRepository.class
 helper/helperapi/modelResponse/GetFancyResponse/FancyData.class
+helper/helperapi/sqlModels/BetLockResponse.class
 helper/helperapi/modelResponse/FancyResultRespone.class
 helper/helperapi/services/UserService.class
 helper/helperapi/repository/EventRepository.class
